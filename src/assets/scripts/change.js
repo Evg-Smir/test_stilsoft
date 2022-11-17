@@ -9,13 +9,13 @@ export function changeItem(item, array) {
                 image: item.item.image,
             }
 
-            if (item.item.availability) {
+            if (item.item.date) {
                 step = {
                     ...step,
-                    availability: item.item.availability,
                     price: item.item.price,
                     date: step.date,
-                    category: step.category
+                    category: step.category,
+                    availability: item.item.availability
                 }
             } else {
                 step = {

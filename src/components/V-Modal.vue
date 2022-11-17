@@ -93,7 +93,7 @@ export default {
       this.url = this.CURRENT_EDIT.item.image
       this.category = this.CURRENT_EDIT.item.category ? this.CURRENT_EDIT.item.title : ''
       this.price = this.CURRENT_EDIT.item.price ? this.CURRENT_EDIT.item.price : ''
-      this.availability = this.CURRENT_EDIT.item.availability ? this.CURRENT_EDIT.item.availability : ''
+      this.availability = this.CURRENT_EDIT.item.availability
     }
   },
 }
