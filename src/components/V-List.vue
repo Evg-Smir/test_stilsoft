@@ -56,7 +56,7 @@ export default {
       }
       this.$store.dispatch('CHANGE_STATE_MODAL', object);
     }
-  },
+  }
 }
 </script>
 

@@ -15,7 +15,7 @@
       </div>
       <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Price</span>
-        <input class="modal-input__input" type="text" v-model="price">
+        <input class="modal-input__input" type="number" v-model="price">
       </div>
       <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Availability</span>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "V-Modal",

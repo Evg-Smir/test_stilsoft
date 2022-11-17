@@ -9,7 +9,6 @@ export default {
   name: "V-Edit",
   methods: {
     editItem() {
-      console.log('date' in this.currentItem)
       const object = {
         name: 'date' in this.currentItem ? 'item' : 'category',
         item: this.currentItem,
