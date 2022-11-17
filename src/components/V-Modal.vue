@@ -9,26 +9,15 @@
         <span class="modal-input__title">Name</span>
         <input class="modal-input__input" type="text" v-model="title">
       </div>
-      <!--      <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'items'">-->
-      <!--        <span class="modal-input__title">Category</span>-->
-      <!--        <select class="modal-input__select" v-model="category">-->
-      <!--          <option-->
-      <!--            v-for="category in LIST_CATEGORY"-->
-      <!--            :value="category.title"-->
-      <!--            :key="category.title"-->
-      <!--            v-text="category.title"-->
-      <!--          />-->
-      <!--        </select>-->
-      <!--      </div>-->
       <div class="modal__form-input">
         <span class="modal-input__title">Link pictures</span>
         <input class="modal-input__input" type="text" v-model="url">
       </div>
-      <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'items'">
+      <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Price</span>
         <input class="modal-input__input" type="text" v-model="price">
       </div>
-      <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'items'">
+      <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Availability</span>
         <input type="checkbox" v-model="availability">
       </div>

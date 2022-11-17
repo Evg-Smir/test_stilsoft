@@ -13,24 +13,24 @@
           :style="{backgroundImage: `url(${category.image})`}"
           :to="{name: `category`, params: { nameCategory: category.name }}"
         >
-          <button class="category-name__edit" @click.prevent="editItem(category)">
-            <img src="../assets/images/edit.svg" alt="edit">
-          </button>
+          <VEdit :currentItem="category"/>
           <div class="category-name__name" v-text="category.title"/>
         </router-link>
       </div>
-      <router-link to="/setting">
-        <div class="category__item category__item-added"/>
-      </router-link>
+      <router-link to="/setting" class="category__item category__item-added"></router-link>
     </div>
   </section>
 </template>
 
 <script>
 import {mapActions, mapGetters} from "vuex";
+import VEdit from "@/components/V-Edit";
 
 export default {
   name: "V-Category",
+  components: {
+    VEdit
+  },
   mounted() {
     this.FETCH_LIST_CATEGORY()
     this.FETCH_LIST_ITEMS()
@@ -48,13 +48,13 @@ export default {
       }
       this.$store.dispatch('FILTER_ITEMS', category);
     },
-    editItem(item) {
-      const object = {
-        name: 'category',
-        item,
-      }
-      this.$store.dispatch('CHANGE_STATE_MODAL', object);
-    }
+    // editItem(item) {
+    //   const object = {
+    //     name: 'category',
+    //     item,
+    //   }
+    //   this.$store.dispatch('CHANGE_STATE_MODAL', object);
+    // }
   }
 }
 </script>

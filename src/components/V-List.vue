@@ -18,9 +18,11 @@
             :disabled="!item.availability"
             v-text="checkAvailability(item.availability)"
           />
-          <button class="list-item__edit" @click="editItem(item)">
-            <img src="../assets/images/edit.svg" alt="edit">
-          </button>
+          <VEdit :currentItem="item"/>
+
+<!--          <button class="list-item__edit" @click="editItem(item)">-->
+<!--            <img src="../assets/images/edit.svg" alt="edit">-->
+<!--          </button>-->
         </div>
       </div>
       <div class="list__empty" v-else>
@@ -33,11 +35,12 @@
 <script>
 import {mapGetters} from 'vuex'
 import VFilter from "@/components/V-Filter";
+import VEdit from "@/components/V-Edit";
 
 export default {
   name: "V-List",
   components: {
-    VFilter
+    VFilter, VEdit
   },
   computed: {
     ...mapGetters(['LIST_ITEMS', 'CURRENT_CATEGORY']),
