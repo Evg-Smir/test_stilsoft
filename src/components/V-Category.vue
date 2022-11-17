@@ -5,17 +5,19 @@
         Categories
       </h2>
       <div class="category__list">
-        <div class="category__item"
-             @click="linkCategory(category)"
-             v-for="category in LIST_CATEGORY"
-             :key="category.id"
-             :style="{backgroundImage: `url(${category.image})`}"
+        <router-link
+          @click.native="linkCategory(category)"
+          class="category__item"
+          v-for="category in LIST_CATEGORY"
+          :key="category.id"
+          :style="{backgroundImage: `url(${category.image})`}"
+          :to="{name: `category`, params: { nameCategory: category.name }}"
         >
-          <button class="category-name__edit" @click.stop="editItem(category)">
+          <button class="category-name__edit" @click.prevent="editItem(category)">
             <img src="../assets/images/edit.svg" alt="edit">
           </button>
           <div class="category-name__name" v-text="category.title"/>
-        </div>
+        </router-link>
       </div>
       <router-link to="/setting">
         <div class="category__item category__item-added"/>
@@ -25,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "V-Category",
@@ -44,12 +46,6 @@ export default {
         name: link.name,
         title: link.title
       }
-      this.$router.push({
-        name: `category`,
-        params: {
-          nameCategory: category.name,
-        }
-      })
       this.$store.dispatch('FILTER_ITEMS', category);
     },
     editItem(item) {
@@ -159,6 +155,8 @@ export default {
 }
 
 .category-name__name {
+  color: #e5e5e5;
+  text-decoration: unset;
   font-size: 23px;
   font-weight: 700;
 }
