@@ -47,7 +47,7 @@ export default {
       this.$router.push({
         name: `category`,
         params: {
-          nameCategory: category,
+          nameCategory: category.name,
         }
       })
       this.$store.dispatch('FILTER_ITEMS', category);
