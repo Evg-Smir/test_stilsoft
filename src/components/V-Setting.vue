@@ -2,7 +2,7 @@
   <section class="setting">
     <div class="container">
       <h2 class="setting__title title">
-        <router-link to="/"><img src="../assets/images/back.svg" alt=""></router-link>
+        <router-link to="/" @click.native="clearData"><img src="../assets/images/back.svg" alt=""></router-link>
         <span>Setting</span>
       </h2>
       <div class="setting__theme">
@@ -23,11 +23,11 @@
       <div class="setting__form">
         <div class="setting__form-input">
           <span class="setting-input__title">Name</span>
-          <input class="setting-input__input" type="text" v-model="title">
+          <input class="setting-input__input" :class="{'setting-input__input_error': errors.includes('title')}" type="text" v-model="title">
         </div>
         <div class="setting__form-input" v-show="currentTheme === 'items'">
           <span class="setting-input__title">Category</span>
-          <select class="setting-input__select" v-model="category">
+          <select class="setting-input__select" :class="{'setting-input__input_error': errors.includes('category')}" v-model="category">
             <option
               :value="category.title"
               v-for="category in LIST_CATEGORY"
@@ -38,11 +38,11 @@
         </div>
         <div class="setting__form-input">
           <span class="setting-input__title">Link pictures</span>
-          <input class="setting-input__input" type="text" v-model="url">
+          <input class="setting-input__input" :class="{'setting-input__input_error': errors.includes('url')}" type="text" v-model="url">
         </div>
         <div class="setting__form-input" v-show="currentTheme === 'items'">
           <span class="setting-input__title">Price</span>
-          <input class="setting-input__input" type="text" v-model="price">
+          <input class="setting-input__input" :class="{'setting-input__input_error': errors.includes('price')}" type="text" v-model="price">
         </div>
         <div class="setting__form-input" v-show="currentTheme === 'items'">
           <span class="setting-input__title">Availability</span>
@@ -57,7 +57,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
+import { validate } from "@/assets/scripts/validate";
 
 export default {
   name: "V-Setting",
@@ -81,6 +82,7 @@ export default {
       url: '',
       price: '',
       availability: false,
+      errors: []
     }
   },
   computed: {
@@ -88,48 +90,66 @@ export default {
   },
   methods: {
     selectedTheme(theme) {
+      this.errors = []
       this.currentTheme = theme.name
       this.listChoice.forEach(choice => choice.isActive = choice.name === theme.name)
     },
     addNew() {
-      let newObject = {}
+      this.errors = validate(this.$data, this.currentTheme)
+
+      if (this.errors.length) { return false }
+
       const currentDate = [
         new Date().getDate(),
         new Date().getMonth() + 1,
         new Date().getFullYear()
       ]
+
+      let newObject = {
+        param: this.currentTheme,
+        info: {
+          image: this.url,
+        }
+      }
+
       if (this.currentTheme === 'category') {
         const newId = this.LIST_CATEGORY.at(-1).id
         newObject = {
+          ...newObject,
           info: {
+            ...newObject.info,
             id: newId + 1,
             title: this.title,
-            image: this.url,
             name: this.title.toLowerCase()
-          },
-          param: this.currentTheme
+          }
         }
       } else {
         const newId = this.LIST_ALL_ITEMS.at(-1).id
         newObject = {
+          ...newObject,
           info: {
+            ...newObject.info,
             id: newId + 1,
             name: this.title,
-            image: this.url,
             price: this.price,
             category: this.category.toLowerCase(),
             availability: this.availability,
             date: currentDate.join('.')
-          },
-          param: this.currentTheme
+          }
         }
       }
+
       this.$store.dispatch('ADD_NEW', newObject)
+      this.clearData()
+      alert('Added')
+    },
+    clearData() {
       this.title = ''
       this.category = ''
       this.url = ''
       this.price = ''
       this.availability = false
+      this.errors = []
     },
   },
 }
@@ -208,6 +228,10 @@ export default {
   &:focus-visible {
     outline: none;
   }
+}
+
+.setting-input__input_error {
+  border-color: #ff0000
 }
 
 .setting__button {

@@ -159,5 +159,6 @@ export default {
   text-decoration: unset;
   font-size: 23px;
   font-weight: 700;
+  display: inline-block;
 }
 </style>

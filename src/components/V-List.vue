@@ -11,7 +11,7 @@
           <img class="list-item__image" :src="item.image" alt="">
           <div class="list-item__name" v-text="item.name" />
           <div class="list-item__price" v-text="item.price + ' $'" />
-          <div class="list-item__date" v-text="item.date" />
+          <div class="list-item__date" v-text="'Created: ' + item.date" />
           <button
             class="list-item__button"
             :class="{'list-item__button_disabled': !item.availability}"
@@ -19,10 +19,6 @@
             v-text="checkAvailability(item.availability)"
           />
           <VEdit :currentItem="item"/>
-
-<!--          <button class="list-item__edit" @click="editItem(item)">-->
-<!--            <img src="../assets/images/edit.svg" alt="edit">-->
-<!--          </button>-->
         </div>
       </div>
       <div class="list__empty" v-else>
@@ -49,13 +45,6 @@ export default {
     checkAvailability(value) {
       return value ? 'BUY' : 'not available'
     },
-    editItem(item) {
-      const object = {
-        name: 'items',
-        item,
-      }
-      this.$store.dispatch('CHANGE_STATE_MODAL', object);
-    }
   }
 }
 </script>

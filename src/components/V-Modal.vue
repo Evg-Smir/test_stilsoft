@@ -7,15 +7,15 @@
       </h2>
       <div class="modal__form-input">
         <span class="modal-input__title">Name</span>
-        <input class="modal-input__input" type="text" v-model="title">
+        <input class="modal-input__input" :class="{'modal-input__input_error': errors.includes('title')}" type="text" v-model="title">
       </div>
       <div class="modal__form-input">
         <span class="modal-input__title">Link pictures</span>
-        <input class="modal-input__input" type="text" v-model="url">
+        <input class="modal-input__input" :class="{'modal-input__input_error': errors.includes('url')}" type="text" v-model="url">
       </div>
       <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Price</span>
-        <input class="modal-input__input" type="number" v-model="price">
+        <input class="modal-input__input" :class="{'modal-input__input_error': errors.includes('price')}" type="number" v-model="price">
       </div>
       <div class="modal__form-input" v-show="CURRENT_EDIT.name === 'item'">
         <span class="modal-input__title">Availability</span>
@@ -35,6 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { validate } from "@/assets/scripts/validate";
 
 export default {
   name: "V-Modal",
@@ -45,6 +46,7 @@ export default {
       url: '',
       price: '',
       availability: false,
+      errors: []
     }
   },
   computed: {
@@ -55,36 +57,51 @@ export default {
       this.$store.dispatch('CHANGE_STATE_MODAL')
     },
     saveItem() {
-      if (confirm('Are you sure you want to do this?')) {
+      this.errors = validate(this.$data, this.CURRENT_EDIT.name)
+
+      if (this.errors.length) { return false }
+
+      if (!confirm('Are you sure you want to do this?')) {
+        return false
+      }
+
+      let newObject = {
+          name: this.CURRENT_EDIT.name,
+          item : {
+            ...this.CURRENT_EDIT.item,
+            image: this.url,
+          }
+        }
+
         if (this.CURRENT_EDIT.name === 'category') {
-          this.$store.dispatch('EDIT_ITEM', {
-            name: this.CURRENT_EDIT.name,
+          newObject = {
+            ...newObject,
             item: {
-              ...this.CURRENT_EDIT.item,
+              ...newObject.item,
               title: this.title,
-              image: this.url,
             }
-          })
+          }
         } else {
-          this.$store.dispatch('EDIT_ITEM', {
-            name: this.CURRENT_EDIT.name,
+          newObject = {
+            ...newObject,
             item: {
-              ...this.CURRENT_EDIT.item,
+              ...newObject.item,
               name: this.title,
-              image: this.url,
               price: this.price,
               availability: this.availability,
             }
-          })
+          }
         }
+        this.$store.dispatch('EDIT_ITEM', newObject)
         this.$store.dispatch('CHANGE_STATE_MODAL')
-      }
     },
     deleteItem() {
-      if (confirm('Are you sure you want to do this?')) {
-        this.$store.dispatch('DELETE_ITEM', this.CURRENT_EDIT)
-        this.$store.dispatch('CHANGE_STATE_MODAL')
+      if (!confirm('Are you sure you want to do this?')) {
+        return false
       }
+
+      this.$store.dispatch('DELETE_ITEM', this.CURRENT_EDIT)
+      this.$store.dispatch('CHANGE_STATE_MODAL')
     },
   },
   watch: {
@@ -152,6 +169,10 @@ export default {
   &:focus-visible {
     outline: none;
   }
+}
+
+.modal-input__input_error {
+  border-color: #ff0000;
 }
 
 .modal-input__select {
