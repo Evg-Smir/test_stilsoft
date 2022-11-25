@@ -48,13 +48,6 @@ export default {
       }
       this.$store.dispatch('FILTER_ITEMS', category);
     },
-    // editItem(item) {
-    //   const object = {
-    //     name: 'category',
-    //     item,
-    //   }
-    //   this.$store.dispatch('CHANGE_STATE_MODAL', object);
-    // }
   }
 }
 </script>
